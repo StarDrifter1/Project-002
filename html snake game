@@ -1,0 +1,77 @@
+<canvas id="gc" width="905" height="905"></canvas>
+<script>
+//Above sets canvas size, but not playable area
+window.onload=function() {
+    canv=document.getElementById("gc");
+    ctx=canv.getContext("2d");
+    document.addEventListener("keydown",keyPush);
+    setInterval(game,1000/15);
+}
+//Below is player positions, gs=gridsize, and apply x/y with goal for amount snake needs to eat. xv=xy is the array for player (snake being controlled), tail shows the starting amount of squares.
+px=py=10;
+gs=tc=30;
+ax=ay=15;
+xv=yv=0;
+trail=[];
+tail = 3;
+function game() {
+    px+=xv;
+    py+=yv;
+    if(px<0) {
+        px= tc-1;
+    }
+    if(px>tc-1) {
+        px= 0;
+    }
+    if(py<0) {
+        py= tc-1;
+    }
+    if(py>tc-1) {
+        py= 0;
+    }
+    ctx.fillStyle="black";
+    ctx.fillRect(0,0,canv.width,canv.height);
+
+    ctx.fillStyle="blue";
+    for(var i=0;i<trail.length;i++) {
+        ctx.fillRect(trail[i].x*gs,trail[i].y*gs,gs-2,gs-2);
+        if(trail[i].x==px && trail[i].y==py) {
+            tail = 3;
+        }
+    }
+//see above where when py and px == the same it effects the player.
+    trail.push({x:px,y:py});
+    while(trail.length>tail) {
+    trail.shift();
+    }
+//above penalizes tail and shaves some off if??
+    if(ax==px && ay==py) {
+        tail++;
+        ax=Math.floor(Math.random()*tc);
+        ay=Math.floor(Math.random()*tc);
+    }
+//grows snake when step on/eat an apple, see where ax/ay =px/py both = via && symbol.
+    ctx.fillStyle="red";
+    ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+//context.fillstyle=color of apple here??  
+}
+function keyPush(evt) {
+    switch(evt.keyCode) {
+        case 37:
+            xv=-1;yv=0;
+            break;
+        case 38:
+            xv=0;yv=-1;
+            break;
+        case 39:
+            xv=1;yv=0;
+            break;
+        case 40:
+            xv=0;yv=1;
+            break;
+    }
+//This function above is the uniform keycodes for the up and down arrow keys on the keyboard
+}
+</script>
+
+
