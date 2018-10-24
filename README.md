@@ -1,1 +1,2 @@
-# Project-002
+# Project-002: Snake
+Simple snake game in python
